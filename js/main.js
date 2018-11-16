@@ -35,6 +35,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   neighborhoods.forEach(neighborhood => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
+    option.tabIndex = '2';
     option.value = neighborhood;
     select.append(option);
   });
@@ -63,6 +64,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
   cuisines.forEach(cuisine => {
     const option = document.createElement('option');
     option.innerHTML = cuisine;
+    option.tabIndex = '3';
     option.value = cuisine;
     select.append(option);
   });
@@ -115,9 +117,12 @@ updateRestaurants = () => {
   const neighborhood = nSelect[nIndex].value;
 
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    
+
     if (error) { // Got an error!
       console.error(error);
     } else {
+      removeNoResults();
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
     }
@@ -145,11 +150,18 @@ resetRestaurants = (restaurants) => {
  * Create all restaurants HTML and add them to the webpage.
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
+
   const ul = document.getElementById('restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+
+  // debugger
+
+  if (restaurants = []) {
+    emptySearchHTML();
+  }
 }
 
 /**
@@ -161,6 +173,7 @@ createRestaurantHTML = (restaurant) => {
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = 'image of restaurant';
   li.append(image);
 
   const name = document.createElement('h1');
@@ -178,6 +191,8 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  more.tabIndex = '4';
+  more.setAttribute('aria-label', restaurant.name);
   li.append(more)
 
   return li
@@ -198,6 +213,28 @@ addMarkersToMap = (restaurants = self.restaurants) => {
   });
 
 } 
+
+// adds html to inform user that the search result is empty
+emptySearchHTML = () => {
+  const ul = document.getElementById('restaurants-list');
+  const searchResults = document.getElementById('restaurants');
+  const noResults = document.createElement('h4');
+
+  if (ul.children.length === 0) {
+  noResults.innerHTML = 'There are no restaurants that match your search criteria';
+  noResults.tabIndex = '4';
+  noResults.setAttribute('id', 'no-results');
+  searchResults.append(noResults);}
+}
+
+// removes the no results message when there are results
+removeNoResults = () => {
+  const searchResults = document.getElementById('restaurants');
+  const noResults = document.getElementById('no-results');
+  if (searchResults.contains(noResults)) {
+      searchResults.removeChild(noResults);
+  }
+}
 /* addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
