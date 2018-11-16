@@ -132,6 +132,11 @@ nav h1 a {
   width: 200px;
 }
 
+#no-results {
+  color: red;
+  text-align: center;
+}
+
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
   background-color: #f3f3f3;
