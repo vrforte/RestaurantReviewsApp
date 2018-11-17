@@ -250,10 +250,10 @@ removeNoResults = () => {
 // ------------- Service Worker -------------
  if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js')
-  .then(function(registration) {
+  .then(registration => {
     console.log('Registration successful');
   })
-  .catch(function(err){
+  .catch(error => {
     console.log('Sevice Worker registration failed');
   })
  }
