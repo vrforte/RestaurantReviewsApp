@@ -40,6 +40,16 @@ self.addEventListener('fetch', event => {
 	    caches.match(event.request).then(response => {
 	    	// return the response or fetch from the server if not available in cache
 	      	return response || fetch(event.request);
+
+	      	let requestCopy = event.request.clone();
+	      	return fetch(requestCopy).then(response => {
+	      		return response;
+
+	      		let responseCopy = response.clone();
+	      		caches.open(cacheName).then(cache => {
+	      			cache.put(event.request, responseCopy);
+	      		})
+	      	})
 	    })
 	    // handle errors
 	    .catch(error => {
