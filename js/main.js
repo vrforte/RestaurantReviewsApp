@@ -248,11 +248,15 @@ removeNoResults = () => {
 
 
 // ------------- Service Worker -------------
+
+// register the service worker if suported by browser
  if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js')
   .then(registration => {
+    // confirm successful registration
     console.log('Registration successful');
   })
+  // handle errors
   .catch(error => {
     console.log('Sevice Worker registration failed');
   })

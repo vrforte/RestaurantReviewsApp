@@ -1,7 +1,10 @@
+// logs to console to show service worker is running
 console.log('Service Worker registered');
 
-var cacheName = 'v1';
+// name the cache
+let cacheName = 'v1';
 
+// files to add to the cache
 const urlsToCache = [
 	'/',
 	'/index.html',
@@ -22,6 +25,7 @@ const urlsToCache = [
 	'/img/9.jpg'
 ];
 
+// install the service worker and add all the array files 
 self.addEventListener('install', event => {
 	event.waitUntil(
 		caches.open(cacheName).then(cache => {
@@ -30,11 +34,14 @@ self.addEventListener('install', event => {
 	)
 });
 
+// fetch the corresponding urls when requests are made
 self.addEventListener('fetch', event => {
 	event.respondWith(
 	    caches.match(event.request).then(response => {
-	      return response || fetch(event.request);
+	    	// return the response or fetch from the server if not available in cache
+	      	return response || fetch(event.request);
 	    })
+	    // handle errors
 	    .catch(error => {
 	    	console.log(error);
 	    })
