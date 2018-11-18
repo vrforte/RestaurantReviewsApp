@@ -30,14 +30,38 @@ self.addEventListener('install', event => {
 	)
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', event => {
 	event.respondWith(
-	    caches.match(event.request).then(function(response) {
+	    caches.match(event.request).then(response => {
 	      return response || fetch(event.request);
 	    })
-	    .catch(function(error) {
+	    .catch(error => {
 	    	console.log(error);
 	    })
   	);
 });
+
+
+
+// ---------------- Sources ---------------
+
+// Credit given to the following sources for completion of this project:
+// https://classroom.udacity.com/
+// https://stackoverflow.com/
+// https://webaim.org/techniques/skipnav/
+// https://developer.mozilla.org/
+// https://developers.google.com/
+// https://www.sketchingwithcss.com/samplechapter/cheatsheet.html
+// https://matthewcranford.com/restaurant-reviews-app-walkthrough-part-1-map-api/
+// https://medium.com/quick-code/service-workers-in-js-and-offline-reading-7bac9d4980ea
+
+
+
+
+
+
+
+
+
+
 
